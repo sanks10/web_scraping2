@@ -1,5 +1,7 @@
 const request = require('request');
 const cheerio = require('cheerio');
+let fs=require('fs');
+let data={};
 
 request("https://www.espncricinfo.com/series/ipl-2021-1249214/punjab-kings-vs-delhi-capitals-29th-match-1254086/full-scorecard", callback);
 
@@ -22,8 +24,11 @@ function dob(names,href){
     request(href, function(error,response,html){
         const manipulationtool1=cheerio.load(html);
         let list=manipulationtool1(".player-card-description.gray-900");
-        let c= manipulationtool1(list[1]).text();
-        console.log(names);
-        console.log(c);
+        // let c= manipulationtool1(list[1]).text();
+        // console.log(names);
+        // console.log(c);
+        data[names]=manipulationtool1(list[1]).text();
+        fs.writeFileSync("data.json",JSON.stringify(data));
+
     });         
 }
